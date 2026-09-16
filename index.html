@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金門 4 天 3 夜家族旅遊 - 智慧行程助手</title>
+    <style>
+        :root {
+            --primary: #2c5364;
+            --secondary: #e67e22;
+            --bg-color: #fcf9f2;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --accent: #d35400;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 10px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .app-header {
+            background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+            color: white;
+            padding: 18px 15px;
+            text-align: center;
+        }
+        .app-header h1 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+        .app-header p {
+            margin: 0;
+            font-size: 11px;
+            opacity: 0.85;
+        }
+        .alert-card {
+            background: #fff8f0;
+            border-left: 4px solid var(--secondary);
+            padding: 10px 12px;
+            margin: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        .alert-card strong {
+            color: var(--accent);
+        }
+        .day-box {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px;
+            margin: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #eee;
+        }
+        .day-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #eee;
+        }
+        .weather-banner {
+            background: #eaf2f8;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            font-size: 11.5px;
+            color: #2980b9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #f1f1f1;
+            align-items: flex-start;
+        }
+        .time-badge {
+            width: 85px;
+            font-weight: bold;
+            color: #2980b9;
+            font-size: 11.5px;
+            flex-shrink: 0;
+        }
+        .event-details {
+            flex-grow: 1;
+            padding-left: 8px;
+        }
+        .event-title {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+        .event-desc {
+            font-size: 11.5px;
+            color: #555;
+            margin-bottom: 3px;
+        }
+        .hours-info {
+            font-size: 11px;
+            color: #e67e22;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .map-links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .map-link {
+            display: inline-block;
+            font-size: 11px;
+            color: #27ae60;
+            text-decoration: none;
+            background: #e8f8f5;
+            padding: 3px 7px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #a3e4d7;
+        }
+        .hotel-box {
+            background: #fdfefe;
+            border: 1px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        .booking-section {
+            background: #fcf3cf;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 12px;
+            border: 1px solid #f9e79f;
+        }
+        .booking-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .btn-booking {
+            background: #d4ac0d;
+            color: white;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 15px;
+            background: #f4ecdf;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="app-header">
+        <h1>📱 金門 4 天 3 夜智慧行程助手</h1>
+        <p>旅遊日期：2026/9/19 - 9/22 ｜ 住宿：閒事別館</p>
+    </div>
+
+    <div class="alert-card">
+        <strong>⏰ 每日出門提醒：</strong> 每天早上預計於 <strong>08:50</strong> 從「閒事別館」發車出發展開精彩行程（Day 1 除外因需機場接機與分批抵達）。
+    </div>
+
+    <!-- Booking Section -->
+    <div class="booking-section">
+        <strong>📌 需事先預訂項目快捷按鈕：</strong>
+        <div class="booking-buttons">
+            <a href="https://www.google.com/search?q=%E9%87%91%E9%97%80%E7%A7%9F%E8%BB%8A%E6%8E%A8%E8%96%A6" target="_blank" class="btn-booking">🚗 機場租車預訂</a>
+        </div>
+    </div>
+
+    <!-- Day 1 -->
+    <div class="day-box">
+        <div class="day-title">Day 1 (9/19 週六)：分批抵達與博餅市集</div>
+        <div class="weather-banner">
+            <span>⛅ 氣候：晴時多雲</span>
+            <span>🌡️ 27°C - 31°C (降雨機率 10%)</span>
+        </div>
+        <div class="alert-card" style="margin: 6px 0 10px 0; padding: 6px 8px;">
+            <strong>⚠️ 注意事項：</strong> Pie、焄、Jr早班機先取車；午後Sean與Chih抵達機場會合（16:00 抵達）。會合與 Check-in 預計於 17:00 前完成。
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">08:10 - 09:30</div>
+            <div class="event-details">
+                <div class="event-title">Pie、焄、Jr搭機出發</div>
+                <div class="event-desc">台北 ➔ 金門尚義機場</div>
+                <div class="hours-info">🕒 營業時間：每日 07:00 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E5%B0%9A%E7%BE%A9%E6%A9%9F%E5%A0%B4" target="_blank" class="map-link">📍 尚義機場導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">09:30 - 10:00</div>
+            <div class="event-details">
+                <div class="event-title">機場租車與行李上車</div>
+                <div class="hours-info">🕒 營業時間：每日 07:00 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E5%B0%9A%E7%BE%A9%E6%A9%9F%E5%A0%B4" target="_blank" class="map-link">📍 尚義機場導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">10:20 - 12:00</div>
+            <div class="event-details">
+                <div class="event-title">早午餐與存德中藥房</div>
+                <div class="event-desc">品嚐廣東粥，順訪百年中藥房買胡椒粉</div>
+                <div class="hours-info">🕒 存德中藥房營業時間：每日 09:30 – 21:30</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%AD%98%E5%BE%B7%E4%B8%AD%E8%97%A5%E6%88%BF" target="_blank" class="map-link">📍 存德中藥房導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">12:00 - 13:30</div>
+            <div class="event-details">
+                <div class="event-title">模範街漫步</div>
+                <div class="event-desc">漫步紅磚拱廊老街、品嚐在地小吃與冰品</div>
+                <div class="hours-info">🕒 營業時間：24 小時開放（店家營業時間約 10:00 – 20:00）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E6%A8%A1%E7%AF%84%E8%A1%97" target="_blank" class="map-link">📍 模範街導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">13:30 - 14:40</div>
+            <div class="event-details">
+                <div class="event-title">邱良功母節孝坊與香記肉羹麵 / 蚵嗲之家</div>
+                <div class="event-desc">參觀金門規模最大牌坊，品嚐在地名店小吃</div>
+                <div class="hours-info">🕒 邱良功母節孝坊：24 小時開放｜香記肉羹麵：每日 06:30 – 19:00｜蚵嗲之家：14:30 – 19:00（週四公休）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%82%B1%E8%89%AF%E5%8A%9F%E6%AF%8D%E7%AF%80%E5%AD%9D%E5%9D%8A" target="_blank" class="map-link">📍 邱良功母節孝坊導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%A6%99%E8%A8%98%E8%82%89%E7%BE%B9%E9%BA%B5" target="_blank" class="map-link">📍 香記肉羹麵導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E8%9A%B5%E5%97%B2%E4%B9%8B%E5%AE%B6" target="_blank" class="map-link">📍 蚵嗲之家導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">14:40 - 15:30</div>
+            <div class="event-details">
+                <div class="event-title">浯江書院（朱子祠）</div>
+                <div class="event-desc">參訪金門唯一的書院古蹟，感受書香氣息</div>
+                <div class="hours-info">🕒 營業時間：每日 09:00 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%B5%AF%E6%B1%9F%E6%9B%B8%E9%99%A2" target="_blank" class="map-link">📍 浯江書院導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">15:30 - 17:00</div>
+            <div class="event-details">
+                <div class="event-title">機場接機會合與飯店 Check-in</div>
+                <div class="event-desc">前往機場接 Sean 與 Chih（16:00 班機抵達），隨後全員一同至「閒事別館」辦理 Check-in 卸下行李並稍作休息</div>
+                <div class="hours-info">🕒 尚義機場：每日 07:00 – 21:00｜閒事別館：櫃檯服務時間 08:00 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E5%B0%9A%E7%BE%A9%E6%A9%9F%E5%A0%B4" target="_blank" class="map-link">📍 尚義機場導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%96%92%E4%BA%8B%E5%88%A5%E9%A4%A8%E7%B2%BE%E7%B7%BB%E6%97%85%E5%BA%97" target="_blank" class="map-link">📍 閒事別館導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">17:00 - 18:00</div>
+            <div class="event-details">
+                <div class="event-title">莒光樓（欣賞夕陽與金城夜景）</div>
+                <div class="event-desc">金門代表性地標，俯瞰夕陽餘暉與對岸夜景</div>
+                <div class="hours-info">🕒 營業時間：每日 08:00 – 22:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E8%8E%92%E5%85%89%E6%A8%93" target="_blank" class="map-link">📍 莒光樓導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">18:00 - 19:15</div>
+            <div class="event-details">
+                <div class="event-title">金寧鄉中秋博餅市集（體驗與晚餐）</div>
+                <div class="event-desc">體驗傳統中秋博餅遊戲，於市集享用特色晚餐</div>
+                <div class="hours-info">🕒 市集活動時間：市集體驗時段 18:00 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E5%AF%A7%E9%84%89%E5%85%AC%E6%89%80" target="_blank" class="map-link">📍 金寧鄉公所導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">19:20 - 21:30</div>
+            <div class="event-details">
+                <div class="event-title">總兵署夜間免費導覽</div>
+                <div class="event-desc">19:30 於總兵署集合參加夜間導覽，至 21:30 導覽結束，隨後回飯店休息</div>
+                <div class="hours-info">🕒 總兵署開放時間：每日 09:00 – 22:00（夜間免費導覽 19:30 – 21:30）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%B8%85%E9%87%91%E9%96%80%E9%8E%AE%E7%B8%BD%E5%85%B5%E7%BD%B2" target="_blank" class="map-link">📍 總兵署導航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hotel-box">
+            🏨 當日住宿：<strong>閒事別館</strong>（金寧鄉） <a href="https://www.google.com/maps/search/?api=1&query=%E9%96%92%E4%BA%8B%E5%88%A5%E9%A4%A8%E7%B2%BE%E7%B7%BB%E6%97%85%E5%BA%97" target="_blank" class="map-link" style="float:right;">📍 導航回飯店</a>
+        </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-box">
+        <div class="day-title">Day 2 (9/20 週日)：戰地洋樓與成功鍋貼</div>
+        <div class="weather-banner">
+            <span>☀️ 氣候：晴朗高溫</span>
+            <span>🌡️ 28°C - 33°C (降雨機率 0%)</span>
+        </div>
+        <div class="alert-card" style="margin: 6px 0 10px 0; padding: 6px 8px;">
+            <strong>⏰ 出門提醒：</strong> 08:50 準時由閒事別館出發！午餐品嚐在地知名的成功鍋貼。
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">09:00 - 10:20</div>
+            <div class="event-details">
+                <div class="event-title">翟山坑道參觀</div>
+                <div class="hours-info">🕒 營業時間：每日 08:30 – 17:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E7%BF%9F%E5%B1%B1%E5%9D%91%E9%81%93" target="_blank" class="map-link">📍 翟山坑道導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">10:30 - 11:30</div>
+            <div class="event-details">
+                <div class="event-title">水頭聚落（得月樓、金水學校）</div>
+                <div class="hours-info">🕒 聚落：24 小時開放（得月樓 / 金水學校展館 08:30 – 17:00）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%B0%B4%E9%A0%AD%E8%81%9A%E8%90%BD" target="_blank" class="map-link">📍 水頭聚落導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%B0%B4%E9%A0%AD%E8%81%9A%E8%90%BD%E5%BE%97%E6%9C%88%E6%A8%93" target="_blank" class="map-link">📍 得月樓導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">11:45 - 13:15</div>
+            <div class="event-details">
+                <div class="event-title">成功鍋貼館午餐</div>
+                <div class="event-desc">品嚐金門招牌黃金酥脆鍋貼與特色家常菜</div>
+                <div class="hours-info">🕒 營業時間：11:30 – 14:00、17:30 – 20:00（週二公休）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%88%90%E5%8A%9F%E9%8D%8B%E8%B2%BC%E9%A4%A8" target="_blank" class="map-link">📍 成功鍋貼館導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">13:25 - 14:30</div>
+            <div class="event-details">
+                <div class="event-title">陳景蘭洋樓與成功坑道</div>
+                <div class="hours-info">🕒 陳景蘭洋樓：每日 08:30 – 17:30｜成功坑道：每日 08:30 – 17:30</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%99%B3%E6%99%AF%E8%98%AD%E6%B4%8B%E6%A8%93" target="_blank" class="map-link">📍 陳景蘭洋樓導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%88%90%E5%8A%9F%E5%9D%91%E9%81%93" target="_blank" class="map-link">📍 成功坑道導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">14:55 - 16:50</div>
+            <div class="event-details">
+                <div class="event-title">歐厝沙灘沉睡戰車</div>
+                <div class="hours-info">🕒 開放時間：24 小時開放（配合每日潮汐退潮時間前往）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%AD%90%E5%8E%9D%E6%B2%99%E7%81%98%E6%B2%89%E7%9D%A1%E6%88%B0%E8%BB%8A" target="_blank" class="map-link">📍 歐厝沙灘導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">17:00 - 18:00</div>
+            <div class="event-details">
+                <div class="event-title">建功嶼摩西分海與夕陽</div>
+                <div class="hours-info">🕒 開放時間：24 小時開放（配合每日退潮時間走石板道登島）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%BB%BA%E5%8A%9F%E5%B6%BC" target="_blank" class="map-link">📍 建功嶼導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">18:10 - 20:00</div>
+            <div class="event-details">
+                <div class="event-title">金門牛家莊全牛大餐（晚餐）</div>
+                <div class="hours-info">🕒 營業時間：11:30 – 14:30、17:00 – 20:30</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E7%89%9B%E5%AE%B6%E8%8E%8A" target="_blank" class="map-link">📍 金門牛家莊導航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hotel-box">
+            🏨 當日住宿：<strong>閒事別館</strong>（金寧鄉） <a href="https://www.google.com/maps/search/?api=1&query=%E9%96%92%E4%BA%8B%E5%88%A5%E9%A4%A8%E7%B2%BE%E7%B7%BB%E6%97%85%E5%BA%97" target="_blank" class="map-link" style="float:right;">📍 導航回飯店</a>
+        </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-box">
+        <div class="day-title">Day 3 (9/21 週一)：小金門與金許園山外創始店</div>
+        <div class="weather-banner">
+            <span>🌤️ 氣候：多雲時晴</span>
+            <span>🌡️ 27°C - 32°C (降雨機率 10%)</span>
+        </div>
+        <div class="alert-card" style="margin: 6px 0 10px 0; padding: 6px 8px;">
+            <strong>⏰ 出門提醒：</strong> 08:50 準時由閒事別館出發！午餐安排至金湖鎮品嚐金許園山外創始店。
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">09:30 - 11:00</div>
+            <div class="event-details">
+                <div class="event-title">小金門九宮坑道、雙口海濱公園</div>
+                <div class="hours-info">🕒 九宮坑道：每日 08:30 – 17:00｜雙口海濱公園：24 小時開放</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E4%B9%9D%E5%AE%AE%E5%9D%91%E9%81%93" target="_blank" class="map-link">📍 九宮坑道導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%9B%99%E5%8F%A3%E6%B5%B7%E6%BF%B1%E5%85%AC%E5%9C%92" target="_blank" class="map-link">📍 雙口海濱公園導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">11:15 - 12:30</div>
+            <div class="event-details">
+                <div class="event-title">金許園午餐（山外創始店）</div>
+                <div class="event-desc">品嚐知名手工蔥油餅、牛肉麵與捲餅</div>
+                <div class="hours-info">🕒 營業時間：05:00 – 14:00（週四公休）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E8%A8%B1%E5%9C%92%E5%B1%B1%E5%A4%96%E5%89%B5%E5%A7%8B%E5%BA%97" target="_blank" class="map-link">📍 金許園山外創始店導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">12:45 - 14:00</div>
+            <div class="event-details">
+                <div class="event-title">嘉年華冰菓室（小金門吃冰消暑）</div>
+                <div class="event-desc">老理髮廳改建的特色冰果室，品嚐招牌蜜芋頭冰</div>
+                <div class="hours-info">🕒 營業時間：每日 11:00 – 18:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%98%89%E5%B9%B4%E8%8F%AF%E5%86%B0%E8%8F%93%E5%AE%A4" target="_blank" class="map-link">📍 嘉年華冰菓室導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">14:15 - 15:00</div>
+            <div class="event-details">
+                <div class="event-title">北山播音牆</div>
+                <div class="hours-info">🕒 開放時間：24 小時開放（播音時間 09:00, 10:30, 13:00, 14:00, 15:00, 16:00）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%8C%97%E5%B1%B1%E6%92%AD%E9%9F%B3%E7%89%86" target="_blank" class="map-link">📍 北山播音牆導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">15:15 - 16:00</div>
+            <div class="event-details">
+                <div class="event-title">合泉購物中心（蛋香蛋狗）✨提前</div>
+                <div class="event-desc">把握 17:00 打烊前提前品嚐特色小吃</div>
+                <div class="hours-info">🕒 營業時間：08:30 – 17:00（週三公休）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%90%88%E6%B3%89%E8%B3%BC%E7%89%A9%E4%B8%AD%E5%BF%83" target="_blank" class="map-link">📍 合泉購物中心導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">16:15 - 17:30</div>
+            <div class="event-details">
+                <div class="event-title">太武山登高健行</div>
+                <div class="hours-info">🕒 開放時間：每日 05:00 – 18:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E6%AD%A6%E5%B1%B1%E6%AF%8B%E5%BF%98%E5%9C%A8%E8%8E%92" target="_blank" class="map-link">📍 太武山導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">17:40 - 18:10</div>
+            <div class="event-details">
+                <div class="event-title">金門小威尼斯（太湖彩繪屋）</div>
+                <div class="hours-info">🕒 開放時間：24 小時開放</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E5%A4%AA%E6%B9%96%E5%BD%A9%E7%B9%AA%E5%B1%8B" target="_blank" class="map-link">📍 彩繪屋導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">18:30 - 19:45</div>
+            <div class="event-details">
+                <div class="event-title">金城市區（后浦）晚餐</div>
+                <div class="hours-info">🕒 老街時間：24 小時開放（店家營業約 11:00 – 20:30）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E5%9F%8E%E8%80%81%E8%A1%97" target="_blank" class="map-link">📍 金城老街導航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hotel-box">
+            🏨 當日住宿：<strong>閒事別館</strong>（金寧鄉） <a href="https://www.google.com/maps/search/?api=1&query=%E9%96%92%E4%BA%8B%E5%88%A5%E9%A4%A8%E7%B2%BE%E7%B7%BB%E6%97%85%E5%BA%97" target="_blank" class="map-link" style="float:right;">📍 導航回飯店</a>
+        </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-box">
+        <div class="day-title">Day 4 (9/22 週二)：古厝燒餅與賦歸</div>
+        <div class="weather-banner">
+            <span>☀️ 氣候：晴朗穩定</span>
+            <span>🌡️ 27°C - 31°C (降雨機率 0%)</span>
+        </div>
+        <div class="alert-card" style="margin: 6px 0 10px 0; padding: 6px 8px;">
+            <strong>⏰ 出門提醒：</strong> 08:50 準時退房出發！行李可先寄放或放車上。
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">09:55 - 11:00</div>
+            <div class="event-details">
+                <div class="event-title">山后民俗文化村</div>
+                <div class="hours-info">🕒 營業時間：每日 08:30 – 17:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E5%B1%B1%E5%90%8E%E6%B0%91%E4%BF%97%E6%96%87%E5%8C%96%E6%9D%91" target="_blank" class="map-link">📍 山后民俗文化村導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">11:10 - 12:00</div>
+            <div class="event-details">
+                <div class="event-title">沙美老街與燒餅</div>
+                <div class="hours-info">🕒 營業時間：24 小時開放（燒餅與老店營業約 06:00 – 13:00）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E6%B2%99%E7%BE%8E%E8%80%81%E8%A1%97" target="_blank" class="map-link">📍 沙美老街導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">12:20 - 13:30</div>
+            <div class="event-details">
+                <div class="event-title">遠來興小店午餐</div>
+                <div class="event-desc">品嚐沙美老街在地廣東粥與特色麵食</div>
+                <div class="hours-info">🕒 營業時間：05:00 – 13:00（週四公休）</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%81%A0%E4%BE%86%E8%88%88%E5%B0%8F%E5%BA%97" target="_blank" class="map-link">📍 遠來興小店導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">13:30 - 16:30</div>
+            <div class="event-details">
+                <div class="event-title">伴手禮採買</div>
+                <div class="hours-info">🕒 營業時間：各名產店營業時間約 08:30 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E4%BC%B4%E6%89%8B%E7%A6%AE" target="_blank" class="map-link">📍 特產店家導航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="time-badge">17:00 - 20:20</div>
+            <div class="event-details">
+                <div class="event-title">機場報到、還車與搭機返台</div>
+                <div class="hours-info">🕒 營業時間：每日 07:00 – 21:00</div>
+                <div class="map-links-container">
+                    <a href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%96%80%E5%B0%9A%E7%BE%A9%E6%A9%9F%E5%A0%B4" target="_blank" class="map-link">📍 尚義機場導航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hotel-box">
+            🏨 旅程圓滿賦歸！
+        </div>
+    </div>
+
+    <div class="footer">
+        金門 4 天 3 夜家族旅遊行程指南 ｜ 祝全家旅途平安、玩得開心！
+    </div>
+</div>
+
+</body>
+</html>
